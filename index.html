@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Study Timetable</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+  body {
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f8ff;
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h2 {
+  color: #1e90ff;
+  font-size: 2em;
+  margin: 0;
+}
+
+header p {
+  color: #555;
+  font-size: 1.1em;
+}
+
+.goals, .timetable, .quote-section {
+  margin: 20px 0;
+}
+
+h3 {
+  color: #34495e;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  background: #eaf6ff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+ul li input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table th, table td {
+  border: 1px solid #bdc3c7;
+  padding: 10px;
+  text-align: center;
+  font-size: 1em;
+}
+
+table th {
+  background: #1e90ff;
+  color: white;
+}
+
+table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+#current-subject, #upcoming-subjects {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  color: #1e90ff;
+}
+
+.quote-section {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.quote-section p {
+  margin: 0;
+}
+
+.progress {
+  margin-top: 20px;
+}
+
+.progress-bar {
+  background: #1e90ff;
+  height: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  font-size: 0.9em;
+  line-height: 20px;
+  transition: width 0.4s ease-in-out;
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #1e90ff;
+  color: white;
+  font-size: 0.95em;
+  border-top: 2px solid #0d74d1;
+  border-radius: 0 0 15px 15px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h2>Nandipha's Study Timetable</h2>
+      <p>Stay organized and achieve your goals!</p>
+    </header>
+
+    <section class="goals" aria-labelledby="goals-title">
+      <h3 id="goals-title">Today's Goals</h3>
+      <ul id="daily-goals"></ul>
+    </section>
+
+    <section class="timetable" aria-labelledby="schedule-title">
+      <h3 id="schedule-title">Timetable for <span id="current-day"></span></h3>
+      <table id="schedule-table"></table>
+      <p id="current-subject"></p>
+      <p id="upcoming-subjects"></p>
+    </section>
+
+    <section class="progress" aria-labelledby="progress-title">
+      <h3 id="progress-title">Daily Progress</h3>
+      <div class="progress-bar" id="progress-bar" style="width: 0%;">0% Completed</div>
+    </section>
+
+    <section class="quote-section" aria-labelledby="quote-title">
+      <p id="motivational-quote">"The secret of getting ahead is getting started."</p>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Developed by nhy
+  </footer>
+
+  <script>
+  const timetable = {
+  Sunday: [{ time: "9:30 PM - 11:30 PM", subject: "PE" }],
+  Monday: [{ time: "8:50 PM - 10:30 PM", subject: "Mathematics" }],
+  Tuesday: [{ time: "9:30 PM - 11:30 PM", subject: "Physics" }],
+  Wednesday: [{ time: "9:30 PM - 11:30 PM", subject: "Biology" }],
+  Thursday: [{ time: "9:30 PM - 12:00 PM", subject: "Chemistry" }],
+  Friday: [{ time: "9:30 PM - 11:50 PM", subject: "ESL - EFL" }],
+  Saturday: [{ time: "9:30 PM - 11:30 PM", subject: "PE" }],
+};
+
+const goals = {
+  Monday: ["Complete Math exercises", "65 - 100"],
+  Tuesday: ["Revise Physics notes", "70 - 100"],
+  Wednesday: ["Review Biology notes", "80 - 100"],
+  Thursday: ["Prepare Chemistry experiments", "85 - 100"],
+  Friday: ["Study English vocabulary", "75 - 100"],
+  Saturday: ["Practice PE routines", "50 - 100"],
+  Sunday: ["Review weekly progress", "100 - 100"],
+};
+
+const quotes = [
+  "The secret of getting ahead is getting started.",
+  "Success is the sum of small efforts, repeated day in and day out.",
+  "Believe in yourself and all that you are.",
+  "Don’t watch the clock; do what it does. Keep going.",
+  "Dream big and dare to fail."
+];
+
+const today = new Date();
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const currentDay = days[today.getDay()];
+document.getElementById("current-day").textContent = currentDay;
+
+// Populate goals
+const goalsList = document.getElementById("daily-goals");
+if (goals[currentDay]) {
+  goals[currentDay].forEach(goal => {
+    const li = document.createElement("li");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.addEventListener("change", updateProgress);
+    li.appendChild(checkbox);
+    li.append(" " + goal);
+    goalsList.appendChild(li);
+  });
+}
+
+// Populate timetable
+const scheduleTable = document.getElementById("schedule-table");
+if (timetable[currentDay] && timetable[currentDay].length > 0) {
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  const thTime = document.createElement("th");
+  const thSubject = document.createElement("th");
+  thTime.textContent = "Time";
+  thSubject.textContent = "Subject";
+  headerRow.appendChild(thTime);
+  headerRow.appendChild(thSubject);
+  thead.appendChild(headerRow);
+  scheduleTable.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  timetable[currentDay].forEach(slot => {
+    const row = document.createElement("tr");
+    const timeCell = document.createElement("td");
+    const subjectCell = document.createElement("td");
+    timeCell.textContent = slot.time;
+    subjectCell.textContent = slot.subject;
+    row.appendChild(timeCell);
+    row.appendChild(subjectCell);
+    tbody.appendChild(row);
+  });
+  scheduleTable.appendChild(tbody);
+} else {
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+  cell.colSpan = 2;
+  cell.textContent = "No study sessions scheduled.";
+  row.appendChild(cell);
+  scheduleTable.appendChild(row);
+}
+
+// Motivational quote
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+document.getElementById("motivational-quote").textContent = `"${randomQuote}"`;
+
+// Progress tracking
+function updateProgress() {
+  const checkboxes = document.querySelectorAll('#daily-goals input[type="checkbox"]');
+  const total = checkboxes.length;
+  const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+  const progressBar = document.getElementById('progress-bar');
+  progressBar.style.width = `${percent}%`;
+  progressBar.textContent = `${percent}% Completed`;
+}
+  
+  </script>
+</body>
+</html>
