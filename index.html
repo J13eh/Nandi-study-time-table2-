@@ -3,282 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Study Timetable</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Happy Birthday!</title>
+  <link rel="stylesheet" href="style.css"/>
   <style>
-  body {
-  font-family: 'Segoe UI', 'Arial', sans-serif;
+body {
   margin: 0;
-  padding: 0;
-  background-color: #f0f8ff;
-  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  text-align: center;
+  color: #6b0f1a;
 }
 
 .container {
-  max-width: 900px;
-  margin: 20px auto;
+  margin-top: 15vh;
   padding: 20px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 1s ease-in-out;
 }
 
-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-header h2 {
-  color: #1e90ff;
-  font-size: 2em;
-  margin: 0;
-}
-
-header p {
-  color: #555;
-  font-size: 1.1em;
-}
-
-.goals, .timetable, .quote-section {
-  margin: 20px 0;
-}
-
-h3 {
-  color: #34495e;
-  font-size: 1.4em;
+h1 {
+  font-size: 3em;
   margin-bottom: 10px;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  background: #eaf6ff;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-ul li input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-table th, table td {
-  border: 1px solid #bdc3c7;
-  padding: 10px;
-  text-align: center;
-  font-size: 1em;
-}
-
-table th {
-  background: #1e90ff;
-  color: white;
-}
-
-table tr:nth-child(even) {
-  background: #f9f9f9;
-}
-
-#current-subject, #upcoming-subjects {
-  margin-top: 20px;
+p {
   font-size: 1.2em;
-  font-weight: bold;
-  text-align: center;
-  color: #1e90ff;
+  margin: 20px 0;
 }
 
-.quote-section {
-  text-align: center;
-  font-style: italic;
-  color: #555;
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.quote-section p {
-  margin: 0;
-}
-
-.progress {
-  margin-top: 20px;
-}
-
-.progress-bar {
-  background: #1e90ff;
-  height: 20px;
-  border-radius: 10px;
-  text-align: center;
+button {
+  padding: 12px 24px;
+  font-size: 1em;
+  background-color: #ff69b4;
   color: white;
-  font-size: 0.9em;
-  line-height: 20px;
-  transition: width 0.4s ease-in-out;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
+button:hover {
+  background-color: #ff1493;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  text-align: left;
+  color: #333;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
 footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
   text-align: center;
-  padding: 15px;
-  background-color: #1e90ff;
-  color: white;
-  font-size: 0.95em;
-  border-top: 2px solid #0d74d1;
-  border-radius: 0 0 15px 15px;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  font-size: 0.9em;
+  color: #a0522d;
 }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h2>Nandipha's Study Timetable</h2>
-      <p>Stay organized and achieve your goals!</p>
-    </header>
-
-    <section class="goals" aria-labelledby="goals-title">
-      <h3 id="goals-title">Today's Goals</h3>
-      <ul id="daily-goals"></ul>
-    </section>
-
-    <section class="timetable" aria-labelledby="schedule-title">
-      <h3 id="schedule-title">Timetable for <span id="current-day"></span></h3>
-      <table id="schedule-table"></table>
-      <p id="current-subject"></p>
-      <p id="upcoming-subjects"></p>
-    </section>
-
-    <section class="progress" aria-labelledby="progress-title">
-      <h3 id="progress-title">Daily Progress</h3>
-      <div class="progress-bar" id="progress-bar" style="width: 0%;">0% Completed</div>
-    </section>
-
-    <section class="quote-section" aria-labelledby="quote-title">
-      <p id="motivational-quote">"The secret of getting ahead is getting started."</p>
-    </section>
+    <h1>🎉 Happy Birthday, Nandipha! 🎉</h1>
+    <p>You are truly special, and today is all about celebrating YOU. 💖</p>
+    <button onclick="showMessage()">Click for a Surprise 🎁</button>
   </div>
 
-  <footer>
-    &copy; 2025 Developed by Ngambo J 
-  </footer>
+  <div class="modal" id="birthdayModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>To My Amazing Friend</h2>
+      <p>
+        May your day be filled with love, laughter, and joy as beautiful as you are! 💐💫<br />
+        I’m so lucky to have a friend like you in my life. Cheers to more adventures and memories! 🥂
+      </p>
+    </div>
+  </div>
 
-  <script>
-  const timetable = {
-  Sunday: [{ time: "9:30 PM - 11:30 PM", subject: "PE" }],
-  Monday: [{ time: "8:50 PM - 10:30 PM", subject: "Mathematics" }],
-  Tuesday: [{ time: "9:30 PM - 11:30 PM", subject: "Physics" }],
-  Wednesday: [{ time: "9:30 PM - 11:30 PM", subject: "Biology" }],
-  Thursday: [{ time: "9:30 PM - 12:00 PM", subject: "Chemistry" }],
-  Friday: [{ time: "9:30 PM - 11:50 PM", subject: "ESL - EFL" }],
-  Saturday: [{ time: "9:30 PM - 11:30 PM", subject: "PE" }],
-};
+  <canvas id="confetti"></canvas>
+<footer>
+  <p>Created with 💘 by <strong>Ngambo Jireh</strong> — Just for you!</p>
+</footer>
+  <script >
+  function showMessage() {
+  document.getElementById('birthdayModal').style.display = 'flex';
+}
 
-const goals = {
-  Monday: ["Complete Math exercises", "65 - 100"],
-  Tuesday: ["Revise Physics notes", "70 - 100"],
-  Wednesday: ["Review Biology notes", "80 - 100"],
-  Thursday: ["Prepare Chemistry experiments", "85 - 100"],
-  Friday: ["Study English vocabulary", "75 - 100"],
-  Saturday: ["Practice PE routines", "50 - 100"],
-  Sunday: ["Review weekly progress", "100 - 100"],
-};
+function closeModal() {
+  document.getElementById('birthdayModal').style.display = 'none';
+}
 
-const quotes = [
-  "The secret of getting ahead is getting started.",
-  "Success is the sum of small efforts, repeated day in and day out.",
-  "Believe in yourself and all that you are.",
-  "Don’t watch the clock; do what it does. Keep going.",
-  "Dream big and dare to fail."
-];
+// Confetti animation using canvas
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
 
-const today = new Date();
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const currentDay = days[today.getDay()];
-document.getElementById("current-day").textContent = currentDay;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-// Populate goals
-const goalsList = document.getElementById("daily-goals");
-if (goals[currentDay]) {
-  goals[currentDay].forEach(goal => {
-    const li = document.createElement("li");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.addEventListener("change", updateProgress);
-    li.appendChild(checkbox);
-    li.append(" " + goal);
-    goalsList.appendChild(li);
+const confetti = [];
+
+for (let i = 0; i < 150; i++) {
+  confetti.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 6 + 2,
+    d: Math.random() * 5 + 1,
+    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+    tilt: Math.random() * 10 - 10
   });
 }
 
-// Populate timetable
-const scheduleTable = document.getElementById("schedule-table");
-if (timetable[currentDay] && timetable[currentDay].length > 0) {
-  const thead = document.createElement("thead");
-  const headerRow = document.createElement("tr");
-  const thTime = document.createElement("th");
-  const thSubject = document.createElement("th");
-  thTime.textContent = "Time";
-  thSubject.textContent = "Subject";
-  headerRow.appendChild(thTime);
-  headerRow.appendChild(thSubject);
-  thead.appendChild(headerRow);
-  scheduleTable.appendChild(thead);
-
-  const tbody = document.createElement("tbody");
-  timetable[currentDay].forEach(slot => {
-    const row = document.createElement("tr");
-    const timeCell = document.createElement("td");
-    const subjectCell = document.createElement("td");
-    timeCell.textContent = slot.time;
-    subjectCell.textContent = slot.subject;
-    row.appendChild(timeCell);
-    row.appendChild(subjectCell);
-    tbody.appendChild(row);
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confetti.forEach((c, i) => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+    ctx.fillStyle = c.color;
+    ctx.fill();
+    c.y += c.d;
+    c.x += Math.sin(c.tilt);
+    if (c.y > canvas.height) {
+      confetti[i].y = 0;
+      confetti[i].x = Math.random() * canvas.width;
+    }
   });
-  scheduleTable.appendChild(tbody);
-} else {
-  const row = document.createElement("tr");
-  const cell = document.createElement("td");
-  cell.colSpan = 2;
-  cell.textContent = "No study sessions scheduled.";
-  row.appendChild(cell);
-  scheduleTable.appendChild(row);
+  requestAnimationFrame(drawConfetti);
 }
 
-// Motivational quote
-const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-document.getElementById("motivational-quote").textContent = `"${randomQuote}"`;
-
-// Progress tracking
-function updateProgress() {
-  const checkboxes = document.querySelectorAll('#daily-goals input[type="checkbox"]');
-  const total = checkboxes.length;
-  const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
-  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-  const progressBar = document.getElementById('progress-bar');
-  progressBar.style.width = `${percent}%`;
-  progressBar.textContent = `${percent}% Completed`;
-}
-  
-  </script>
+drawConfetti();</script>
 </body>
-</html>
+  </html>
