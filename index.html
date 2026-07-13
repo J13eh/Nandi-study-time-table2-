@@ -1,191 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>One Year Countdown</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday!</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  text-align: center;
+  color: #6b0f1a;
 }
 
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color:#fff;
-    overflow:hidden;
+.container {
+  margin-top: 15vh;
+  padding: 20px;
 }
 
-.container{
-    width:95%;
-    max-width:900px;
-    text-align:center;
-    padding:40px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(10px);
-    border-radius:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,.35);
+h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
 }
 
-h1{
-    font-size:3rem;
-    margin-bottom:15px;
+p {
+  font-size: 1.2em;
+  margin: 20px 0;
 }
 
-.subtitle{
-    opacity:.8;
-    margin-bottom:35px;
-    font-size:1.1rem;
+button {
+  padding: 12px 24px;
+  font-size: 1em;
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.timer{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:20px;
+button:hover {
+  background-color: #ff1493;
 }
 
-.box{
-    width:150px;
-    height:150px;
-    background:rgba(255,255,255,.1);
-    border-radius:15px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    transition:.3s;
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.box:hover{
-    transform:translateY(-8px);
-    background:rgba(255,255,255,.18);
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  text-align: left;
+  color: #333;
+  position: relative;
 }
 
-.value{
-    font-size:3rem;
-    font-weight:bold;
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
-.label{
-    margin-top:10px;
-    font-size:1rem;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    opacity:.85;
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
 }
-
-.finish{
-    font-size:2.5rem;
-    color:#00ff99;
-    display:none;
+footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+  color: #a0522d;
 }
-
-@media(max-width:700px){
-    .box{
-        width:120px;
-        height:120px;
-    }
-
-    .value{
-        font-size:2.3rem;
-    }
-
-    h1{
-        font-size:2.2rem;
-    }
-}
-</style>
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h1>🎉 Happy Birthday, Nandipha! 🎉</h1>
+    <p>You are truly special, and today is all about celebrating YOU. 💖</p>
+    <button onclick="showMessage()">Click for a Surprise 🎁</button>
+  </div>
 
-<div class="container">
-
-    <h1>1 Year Countdown</h1>
-    <p class="subtitle">Time remaining</p>
-
-    <div class="timer" id="timer">
-
-        <div class="box">
-            <div class="value" id="days">0</div>
-            <div class="label">Days</div>
-        </div>
-
-        <div class="box">
-            <div class="value" id="hours">0</div>
-            <div class="label">Hours</div>
-        </div>
-
-        <div class="box">
-            <div class="value" id="minutes">0</div>
-            <div class="label">Minutes</div>
-        </div>
-
-        <div class="box">
-            <div class="value" id="seconds">0</div>
-            <div class="label">Seconds</div>
-        </div>
-
+  <div class="modal" id="birthdayModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>To My Amazing Friend</h2>
+      <p>
+        Happy Birthday, dear kinswoman. On this special day, I wish you endless happiness, good health, success, and many beautiful moments ahead. May this new year of your life bring you closer to your dreams and fill your heart with peace and joy.
+💐💫<br/>
+Thank you for being such a wonderful part of my life. May you continue to grow, shine, and achieve great things. Enjoy your special day and know that you are truly appreciated. Happy Birthday!✨🥂
+       </p>
     </div>
+  </div>
 
-    <div class="finish" id="finish">
-        🎉 One Year Has Passed! 🎉
-    </div>
-
-</div>
-
-<script>
-
-// Save the target date the first time the page is opened.
-let target = localStorage.getItem("oneYearCountdown");
-
-if(!target){
-    let future = new Date();
-    future.setFullYear(future.getFullYear() + 1);
-    target = future.getTime();
-    localStorage.setItem("oneYearCountdown", target);
+  <canvas id="confetti"></canvas>
+<footer>
+  <p>Created with 💘 by <strong>Ngambo Jireh</strong> — Just for you!</p>
+</footer>
+  <script >
+  function showMessage() {
+  document.getElementById('birthdayModal').style.display = 'flex';
 }
 
-target = Number(target);
+function closeModal() {
+  document.getElementById('birthdayModal').style.display = 'none';
+}
 
-function updateCountdown(){
+// Confetti animation using canvas
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
 
-    const now = Date.now();
-    const diff = target - now;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    if(diff <= 0){
+const confetti = [];
 
-        document.getElementById("timer").style.display="none";
-        document.getElementById("finish").style.display="block";
-        clearInterval(interval);
+for (let i = 0; i < 150; i++) {
+  confetti.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 6 + 2,
+    d: Math.random() * 5 + 1,
+    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+    tilt: Math.random() * 10 - 10
+  });
+}
 
-        return;
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confetti.forEach((c, i) => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+    ctx.fillStyle = c.color;
+    ctx.fill();
+    c.y += c.d;
+    c.x += Math.sin(c.tilt);
+    if (c.y > canvas.height) {
+      confetti[i].y = 0;
+      confetti[i].x = Math.random() * canvas.width;
     }
-
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const minutes = Math.floor((diff%(1000*60*60))/(1000*60));
-    const seconds = Math.floor((diff%(1000*60))/1000);
-
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = String(hours).padStart(2,"0");
-    document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
-    document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
+  });
+  requestAnimationFrame(drawConfetti);
 }
 
-updateCountdown();
-
-const interval = setInterval(updateCountdown,1000);
-
-</script>
-
+drawConfetti();</script>
 </body>
-</html>
+  </html>
